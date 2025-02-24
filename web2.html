@@ -91,7 +91,7 @@
                         </tr>
                     </thead>
                     <tbody id="bookList">
-                        <!-- Books will be populated dynamically -->
+                      
                     </tbody>
                 </table>
             </div>
@@ -145,7 +145,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        // In-memory data store
+        
         let books = [
             { title: "The Lord of the Rings", author: "J.R.R. Tolkien", isbn: "978-06182602" },
             { title: "Pride and Prejudice", author: "Jane Austen", isbn: "978-01414395" },
@@ -153,7 +153,7 @@
         ];
         let members = [];
 
-        // Function to render book list
+       
         function renderBooks(bookArray) {
             const bookList = document.getElementById('bookList');
             bookList.innerHTML = '';
@@ -168,10 +168,9 @@
             });
         }
 
-        // Initial render
         renderBooks(books);
 
-        // Search books
+     
         document.getElementById('searchForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
@@ -179,7 +178,7 @@
             renderBooks(filteredBooks);
         });
 
-        // Add new member
+        
         document.getElementById('memberForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('memberName').value;
@@ -193,7 +192,7 @@
             }
         });
 
-        // Add new book
+       
         document.getElementById('bookForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const title = document.getElementById('bookTitle').value;
