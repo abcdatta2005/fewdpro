@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Library</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #007bff;
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+        .nav-link:hover {
+            color: #ddd !important;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .jumbotron {
+            background-color: #e9ecef;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+        footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-primary bg-dark navbar-dark">
+        <a class="navbar-brand" href="#">Smart Library</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Books</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Members</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Lending</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Welcome to the e-Library</h1>
+            <p>Your one-stop solution for managing books and members.</p>
+            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Available Books</h2>
+                <table class="table table-striped" id="bookTable">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>ISBN</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookList">
+                        <!-- Books will be populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-4">
+                <h2>Search Book</h2>
+                <form id="searchForm">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Enter book title">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+
+                <hr>
+
+                <h2>Add New Member</h2>
+                <form id="memberForm">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="memberName" placeholder="Member Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="memberEmail" placeholder="Member Email">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Member</button>
+                </form>
+
+                <hr>
+
+                <h2>Add New Book</h2>
+                <form id="bookForm">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="bookTitle" placeholder="Book Title">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="bookAuthor" placeholder="Author">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="bookISBN" placeholder="ISBN">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Book</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Smart Library</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // In-memory data store
+        let books = [
+            { title: "The Lord of the Rings", author: "J.R.R. Tolkien", isbn: "978-06182602" },
+            { title: "Pride and Prejudice", author: "Jane Austen", isbn: "978-01414395" },
+            { title: "1984", author: "George Orwell", isbn: "978-04515249" }
+        ];
+        let members = [];
+
+        // Function to render book list
+        function renderBooks(bookArray) {
+            const bookList = document.getElementById('bookList');
+            bookList.innerHTML = '';
+            bookArray.forEach(book => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${book.title}</td>
+                    <td>${book.author}</td>
+                    <td>${book.isbn}</td>
+                `;
+                bookList.appendChild(row);
+            });
+        }
+
+        // Initial render
+        renderBooks(books);
+
+        // Search books
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filteredBooks = books.filter(book => book.title.toLowerCase().includes(searchTerm));
+            renderBooks(filteredBooks);
+        });
+
+        // Add new member
+        document.getElementById('memberForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('memberName').value;
+            const email = document.getElementById('memberEmail').value;
+            if (name && email) {
+                members.push({ name, email });
+                alert(`Member ${name} added successfully!`);
+                this.reset();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+
+        // Add new book
+        document.getElementById('bookForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('bookTitle').value;
+            const author = document.getElementById('bookAuthor').value;
+            const isbn = document.getElementById('bookISBN').value;
+            if (title && author && isbn) {
+                books.push({ title, author, isbn });
+                renderBooks(books);
+                alert(`Book "${title}" added successfully!`);
+                this.reset();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+    </script>
+</body>
+</html>
